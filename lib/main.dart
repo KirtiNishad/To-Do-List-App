@@ -5,6 +5,7 @@ import 'package:to_do_list_app/features/auth/login/bloc/login_bloc.dart';
 import 'package:to_do_list_app/features/auth/login/view/login_screen.dart';
 import 'package:to_do_list_app/features/auth/sign_up/bloc/sign_up_bloc.dart';
 import 'package:to_do_list_app/features/auth/sign_up/view/sign_up_screen.dart';
+import 'package:to_do_list_app/features/dashboard/bloc/task_bloc.dart';
 import 'package:to_do_list_app/features/splash/splash_screen.dart';
 import 'package:to_do_list_app/firebase_options.dart';
 
@@ -22,29 +23,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (context) => SignUpBloc(),
-        ),
-        BlocProvider(
-          create: (context) => LoginBloc(),
-        ),
+        BlocProvider(create: (context) => SignUpBloc()),
+        BlocProvider(create: (context) => LoginBloc()),
+        BlocProvider(create: (context) => TaskBloc()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
         home: SplashScreen(),
       ),
-    );
-  }
-}
-
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(child: Text("data"),),
     );
   }
 }

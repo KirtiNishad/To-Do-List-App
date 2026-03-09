@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:to_do_list_app/features/dashboard/view/task_screen.dart';
 import 'package:to_do_list_app/main.dart';
 
 import '../bloc/sign_up_bloc.dart';
@@ -84,7 +85,7 @@ class SignupScreen extends StatelessWidget {
                       );
 
                       Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (context) => HomeScreen()),
+                        MaterialPageRoute(builder: (context) => TaskScreen()),
                       );
                     }
 

@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:to_do_list_app/features/dashboard/view/task_screen.dart';
 
 import '../../main.dart';
 import '../auth/login/view/login_screen.dart';
@@ -20,7 +21,7 @@ class SplashScreen extends StatelessWidget {
         }
 
         if (snapshot.hasData) {
-          return const HomeScreen();
+          return TaskScreen();
         }
         return LoginScreen();
       },

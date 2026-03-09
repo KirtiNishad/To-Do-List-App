@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:to_do_list_app/features/auth/sign_up/view/sign_up_screen.dart';
+import 'package:to_do_list_app/features/dashboard/view/task_screen.dart';
 
 import '../../../../main.dart';
 import '../bloc/login_bloc.dart';
@@ -82,7 +83,7 @@ class LoginScreen extends StatelessWidget {
 
                       // Navigator.pushReplacementNamed(context, "/home");
                       Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (context) => HomeScreen()),
+                        MaterialPageRoute(builder: (context) => TaskScreen()),
                       );
                     }
 
