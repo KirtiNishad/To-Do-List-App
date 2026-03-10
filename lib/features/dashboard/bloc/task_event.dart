@@ -16,6 +16,13 @@ class ToggleTask extends TaskEvent {
   ToggleTask(this.id, this.status);
 }
 
+class EditTask extends TaskEvent {
+  final String id;
+  final String title;
+
+  EditTask(this.id, this.title);
+}
+
 class DeleteTask extends TaskEvent {
   final String id;
   DeleteTask(this.id);

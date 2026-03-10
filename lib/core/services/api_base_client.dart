@@ -36,12 +36,19 @@ class ApiBaseClient {
     }
   }
 
-  Future<bool> updateTask(String id, bool status) async {
+  Future<bool> updateTask(String id, {String? title, bool? isCompleted}) async {
     try {
-      await _dio.patch("/tasks/$id.json", data: {"isCompleted": status});
+      final data = <String, dynamic>{};
+      if (title != null) {
+        data["title"] = title;
+      }
+      if (isCompleted != null) {
+        data["isCompleted"] = isCompleted;
+      }
+      await _dio.patch("/tasks/$id.json", data: data);
 
       return true;
-    } on DioException catch (e) {
+    } on DioException {
       rethrow;
     } catch (e) {
       rethrow;

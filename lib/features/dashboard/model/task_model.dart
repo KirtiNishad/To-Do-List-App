@@ -23,4 +23,15 @@ class TaskModel {
       "isCompleted": isCompleted,
     };
   }
+
+  TaskModel copyWith({
+    String? title,
+    bool? isCompleted,
+  }) {
+    return TaskModel(
+      id: id,
+      title: title ?? this.title,
+      isCompleted: isCompleted ?? this.isCompleted,
+    );
+  }
 }

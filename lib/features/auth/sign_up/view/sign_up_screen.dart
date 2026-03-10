@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:to_do_list_app/features/dashboard/view/task_screen.dart';
-import 'package:to_do_list_app/main.dart';
-
 import '../bloc/sign_up_bloc.dart';
 
 class SignupScreen extends StatelessWidget {
@@ -19,128 +17,179 @@ class SignupScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = context.read<SignUpBloc>();
+    final size = MediaQuery.of(context).size;
+
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
+      body: SafeArea(
         child: Center(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  "Sign Up",
-                  style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: size.width > 600 ? 400 : double.infinity,
+              ),
+              child: Card(
+                elevation: 6,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
                 ),
-
-                const SizedBox(height: 40),
-
-                TextFormField(
-                  controller: emailController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Email cannot be empty";
-                    }
-
-                    if (!isValidEmail(value)) {
-                      return "Enter a valid email";
-                    }
-
-                    return null;
-                  },
-                  decoration: const InputDecoration(
-                    labelText: "Email",
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-
-                const SizedBox(height: 20),
-
-                TextFormField(
-                  controller: passwordController,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "Password required";
-                    }
-                    if (value.length < 6) {
-                      return "Password must be at least 6 characters";
-                    }
-                    return null;
-                  },
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    labelText: "Password",
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-
-                const SizedBox(height: 30),
-
-                BlocConsumer<SignUpBloc, SignUpState>(
-                  listener: (context, state) {
-                    if (state is SignUpSuccess) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("Account Created Successfully")),
-                      );
-
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (context) => TaskScreen()),
-                      );
-                    }
-
-                    if (state is SignUpError) {
-                      ScaffoldMessenger.of(
-                        context,
-                      ).showSnackBar(SnackBar(content: Text(state.msg)));
-                    }
-                  },
-
-                  builder: (context, state) {
-                    return SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: state is SignUpLoading
-                            ? null
-                            : () {
-                                if (_formKey.currentState!.validate()) {
-                                  context.read<SignUpBloc>().add(
-                                    OnSignUp(
-                                      emailController.text.trim(),
-                                      passwordController.text.trim(),
-                                    ),
-                                  );
-                                }
-                              },
-                        child: state is SignUpLoading
-                            ? const CircularProgressIndicator()
-                            : const Text("Create Account"),
-                      ),
-                    );
-                  },
-                ),
-
-                const SizedBox(height: 20),
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text("Already have an account? "),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Text(
-                        "Login",
-                        style: TextStyle(
+                child: Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(
+                          Icons.person_add_alt_1,
+                          size: 70,
                           color: Colors.blue,
-                          fontWeight: FontWeight.bold,
                         ),
-                      ),
+
+                        const SizedBox(height: 10),
+
+                        const Text(
+                          "Create Account",
+                          style: TextStyle(
+                            fontSize: 26,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+
+                        const SizedBox(height: 30),
+                        TextFormField(
+                          controller: emailController,
+                          decoration: InputDecoration(
+                            labelText: "Email",
+                            prefixIcon: const Icon(Icons.email),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Email cannot be empty";
+                            }
+
+                            if (!isValidEmail(value)) {
+                              return "Enter a valid email";
+                            }
+
+                            return null;
+                          },
+                        ),
+
+                        const SizedBox(height: 20),
+
+                        TextFormField(
+                          controller: passwordController,
+                          obscureText: true,
+                          decoration: InputDecoration(
+                            labelText: "Password",
+                            prefixIcon: const Icon(Icons.lock),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Password required";
+                            }
+
+                            if (value.length < 6) {
+                              return "Password must be at least 6 characters";
+                            }
+
+                            return null;
+                          },
+                        ),
+
+                        const SizedBox(height: 30),
+                        BlocConsumer<SignUpBloc, SignUpState>(
+                          listener: (context, state) {
+                            if (state is SignUpSuccess) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Account Created Successfully"),
+                                ),
+                              );
+
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                  builder: (context) => TaskScreen(),
+                                ),
+                              );
+                            }
+
+                            if (state is SignUpError) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(state.msg)),
+                              );
+                            }
+                          },
+
+                          builder: (context, state) {
+                            return SizedBox(
+                              width: double.infinity,
+                              height: 50,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
+
+                                onPressed: state is SignUpLoading
+                                    ? null
+                                    : () {
+                                        if (_formKey.currentState!.validate()) {
+                                          context.read<SignUpBloc>().add(
+                                            OnSignUp(
+                                              emailController.text.trim(),
+                                              passwordController.text.trim(),
+                                            ),
+                                          );
+                                        }
+                                      },
+
+                                child: state is SignUpLoading
+                                    ? const CircularProgressIndicator(
+                                        color: Colors.white,
+                                      )
+                                    : const Text(
+                                        "Create Account",
+                                        style: TextStyle(fontSize: 16),
+                                      ),
+                              ),
+                            );
+                          },
+                        ),
+
+                        const SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text("Already have an account? "),
+
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text(
+                                "Login",
+                                style: TextStyle(
+                                  color: Colors.blue,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ],
+              ),
             ),
           ),
         ),
